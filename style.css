@@ -95,3 +95,35 @@ a {
   text-align: center;
 }
 
+.vs {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  padding-bottom: 50px;
+}
+.c {
+  width: max-content;
+  padding: 30px;
+  border-radius: 10px;
+}
+.c h1 {
+  width: 50px;
+}
+
+.highlight {
+  background-color: #dc3545 !important; /* Couleur danger */
+  transition: background-color 0.2s ease-in-out !important; /* Transition rapide */
+}
+
+.vsup{
+  display: flex;
+  justify-content: center;
+}
+
+.starting-player {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+

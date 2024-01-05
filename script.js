@@ -3,14 +3,13 @@
 const boardSize = 8;
 const cellSize = 70;
 const borderWidth = 35;
-var blackScore = 0;
-var whiteScore = 0;
-var currentPlayer = "white";
+var currentPlayer = "";
 var cach = [];
 var white_scores = [];
 var black_scores = [];
 var passage = 0;
 var id = 4;
+var s = [];
 var visited = [];
 var colDict = {
   0: "A",
@@ -22,6 +21,8 @@ var colDict = {
   6: "G",
   7: "H",
 };
+
+s = 0;
 
 // Initialisation du stage Konva
 const stage = new Konva.Stage({
@@ -351,18 +352,17 @@ function handleCellClick(row, col) {
 
       id = id + 1;
 
-      score = scoreCalcul(row, col, currentPlayer, visited);
+      score = scoreCalcul(row, col, currentPlayer);
 
       // Changement de joueur actif
       gameHistory(currentPlayer, row, col);
       console.log(currentPlayer + " a joué à : " + row + "," + col);
       currentPlayer = currentPlayer === "black" ? "white" : "black";
 
-      // Mise à jour du panneau de score
-      updateScorePanel();
-
       // Rafraîchir la couche pour afficher le nouveau cercle
       boardLayer.draw();
+      updateScorePanel();
+      endgame(id);
     } else {
       alert("Le nouveau pion doit être adjacent à un pion existant.");
     }
@@ -536,15 +536,21 @@ function scoreCalcul(row, col, color) {
   if (cach[row][col].color == "white") {
     white_scores[cach[row][col].id] = score;
     max = Math.max(...white_scores.filter(Number.isFinite));
-    console.log(`Score ${color} :`, max);
+    document.getElementById("White-score").textContent = `BLANC : ${max}`;
+    document
+      .getElementById("Black-score")
+      .classList.toggle("active", currentPlayer === "black");
   }
   if (cach[row][col].color == "black") {
     black_scores[cach[row][col].id] = score;
     max = Math.max(...black_scores.filter(Number.isFinite));
-    console.log(`Score ${color} :`, max);
+    document.getElementById("Black-score").textContent = `NOIR : ${max}`;
+    document
+      .getElementById("White-score")
+      .classList.toggle("active", currentPlayer === "white");
   }
 
-  return 0;
+  return s;
 }
 
 // Intitialiser le cach
@@ -622,24 +628,8 @@ function isCellEmptyAt(row, col) {
   return existingCircle;
 }
 
-// Fonction pour mettre à jour les scores
-function updateScores(score) {
-  // Implémentez ici la logique pour mettre à jour les scores en fonction du plateau de jeu
-  // Cela dépend de la logique spécifique d'Othello.
-  // Ici, nous incrémentons simplement le score pour le joueur actif à chaque clic.
-  if (currentPlayer === "black") {
-    blackScore == score;
-  } else {
-    whiteScore == score;
-  }
-}
-
 // Fonction pour mettre à jour le panneau de score
 function updateScorePanel() {
-  // Mettre à jour les textes des cartes de score
-  document.getElementById("Black-score").textContent = `NOIR : ${blackScore}`;
-  document.getElementById("White-score").textContent = `BLANC : ${whiteScore}`;
-
   // Mettre en surbrillance la carte de score du joueur actif
   document
     .getElementById("Black-score")
@@ -707,51 +697,70 @@ function endgame(id) {
   }
 }
 
-// // script.js
-// document.addEventListener("DOMContentLoaded", function () {
-//   var modal = document.getElementById("myModal");
-//   var btnBlack = document.getElementById("btnBlack");
-//   var btnWhite = document.getElementById("btnWhite");
+// script.js
+// script.js
+document.addEventListener("DOMContentLoaded", function () {
+  var modal = document.getElementById("myModal");
+  var btnStart = document.querySelector(".btn-danger");
+  var vsDiv = document.querySelector(".vs");
+  var startingPlayer = null;
 
-//   // Afficher le modal au chargement de la page
-//   modal.style.display = "block";
+  // Afficher le modal au chargement de la page
+  modal.style.display = "block";
 
-//   // Gestion du clic sur le bouton Joueur Noir
-//   btnBlack.addEventListener("click", function () {
-//     modal.style.display = "none";
-//     // Logique pour commencer avec le joueur noir
-//     startGame("noir");
-//   });
+  // Gestion du clic sur le bouton "Qui commence ?"
+  btnStart.addEventListener("click", function () {
+    // Masquer le bouton "Qui commence ?"
+    btnStart.style.display = "none";
 
-//   // Gestion du clic sur le bouton Joueur Blanc
-//   btnWhite.addEventListener("click", function () {
-//     modal.style.display = "none";
-//     // Logique pour commencer avec le joueur blanc
-//     startGame("blanc");
-//   });
+    var intervalId = setInterval(function () {
+      // Toggle la classe de surbrillance pour chaque cadre
+      vsDiv.children[0].classList.toggle("highlight");
+      vsDiv.children[2].classList.toggle("highlight");
+    }, 500); // Intervalles de 500 ms (rapides transitions)
 
-//   // Fonction de logique pour commencer le jeu
-//   function startGame(startingPlayer) {
-//     console.log("Le joueur qui commence est : " + startingPlayer);
+    setTimeout(function () {
+      clearInterval(intervalId); // Arrêter le changement de surbrillance
 
-//     // Utiliser un lancer de pièce pour choisir le joueur qui commence
-//     var randomChoice = Math.random(); // Génère un nombre aléatoire entre 0 et 1
+      // Utiliser un lancer de pièce pour choisir le joueur qui commence
+      var randomChoice = Math.round(Math.random() * 10) / 10; // Génère un nombre aléatoire entre 0 et 1
 
-//     if (randomChoice < 0.5) {
-//       console.log("Le joueur noir commence !");
-//       // Ajoutez ici le code pour initialiser votre jeu avec le joueur noir qui commence
-//     } else {
-//       console.log("Le joueur blanc commence !");
-//       // Ajoutez ici le code pour initialiser votre jeu avec le joueur blanc qui commence
-//     }
-//   }
-// });
+      if (Math.round(randomChoice * 10) % 2 === 0) {
+        console.log("Le joueur noir commence !");
+        startingPlayer = "NOIR";
+        vsDiv.children[2].style.display = "none"; // Masquer le cadre du joueur blanc
+        vsDiv.children[0].style.display = "none";
+        vsDiv.children[1].style.display = "none";
+      } else {
+        console.log("Le joueur blanc commence !");
+        startingPlayer = "BLANC";
+        vsDiv.children[2].style.display = "none";
+        vsDiv.children[1].style.display = "none";
+        vsDiv.children[0].style.display = "none"; // Masquer le cadre du joueur noir
+      }
+
+      // Afficher le cadre du joueur qui commence dans le modal
+      var startingPlayerDiv = document.createElement("div");
+      startingPlayerDiv.className = "c starting-player";
+      startingPlayerDiv.style.backgroundColor =
+        startingPlayer === "NOIR" ? "#03071e" : "white";
+      startingPlayerDiv.style.color =
+        startingPlayer === "NOIR" ? "white" : "#03071e";
+      startingPlayerDiv.style.width = "100%"; // Ajoutez cette ligne pour définir la largeur à 100%
+      startingPlayerDiv.innerHTML = `<h2>${startingPlayer}</h2>`;
+      vsDiv.appendChild(startingPlayerDiv);
+
+      // Après 3 secondes, fermer le modal
+      setTimeout(function () {
+        modal.style.display = "none";
+        // Ajoutez ici le code pour initialiser votre jeu avec le joueur qui commence
+      }, 3000);
+    }, 5000);
+  });
+});
 
 // Appel de la fonction pour créer le plateau de jeu
 createBoard();
-
-// Initialiser le panneau de score
-updateScorePanel();
 
 //initialiser le cach
 cachInitialisation();
