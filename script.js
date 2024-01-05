@@ -726,18 +726,27 @@ document.addEventListener("DOMContentLoaded", function () {
       var randomChoice = Math.round(Math.random() * 10) / 10; // Génère un nombre aléatoire entre 0 et 1
 
       if (Math.round(randomChoice * 10) % 2 === 0) {
+        currentPlayer = 'black'
         console.log("Le joueur noir commence !");
         startingPlayer = "NOIR";
+        document
+        .getElementById("Black-score")
+        .classList.toggle("active", currentPlayer === "black");
         vsDiv.children[2].style.display = "none"; // Masquer le cadre du joueur blanc
         vsDiv.children[0].style.display = "none";
         vsDiv.children[1].style.display = "none";
       } else {
+        currentPlayer = 'white'
         console.log("Le joueur blanc commence !");
         startingPlayer = "BLANC";
+        document
+        .getElementById("White-score")
+        .classList.toggle("active", currentPlayer === "white");
         vsDiv.children[2].style.display = "none";
         vsDiv.children[1].style.display = "none";
         vsDiv.children[0].style.display = "none"; // Masquer le cadre du joueur noir
       }
+
 
       // Afficher le cadre du joueur qui commence dans le modal
       var startingPlayerDiv = document.createElement("div");
@@ -750,12 +759,15 @@ document.addEventListener("DOMContentLoaded", function () {
       startingPlayerDiv.innerHTML = `<h2>${startingPlayer}</h2>`;
       vsDiv.appendChild(startingPlayerDiv);
 
+
+
+
       // Après 3 secondes, fermer le modal
       setTimeout(function () {
         modal.style.display = "none";
         // Ajoutez ici le code pour initialiser votre jeu avec le joueur qui commence
       }, 3000);
-    }, 5000);
+    }, 2000);
   });
 });
 
