@@ -10,6 +10,11 @@ var black_scores = [];
 var passage = 0;
 var id = 4;
 var s = [];
+var play = new Audio(
+  "zapsplat_technology_studio_speaker_active_power_switch_click_002_68874.mp3"
+);
+var errorplay = new Audio("zapsplat_multimedia_alert_error_003_26394.mp3");
+
 var visited = [];
 var colDict = {
   0: "A",
@@ -311,10 +316,10 @@ function update_column(pion, score, visiteTable = []) {
 
 function handleCellClick(row, col) {
   const isCellEmpty = isCellEmptyAt(row, col);
+  const hasNeighbor = hasAdjacentPion(row, col);
 
   if (!isCellEmpty) {
-    // Vérifier si au moins une cellule voisine contient un pion
-    const hasNeighbor = hasAdjacentPion(row, col);
+    // Vérifier si au moins une cellule voisine contient un pio
 
     if (hasNeighbor) {
       // Récupérer la position de la cellule
@@ -361,14 +366,27 @@ function handleCellClick(row, col) {
 
       // Rafraîchir la couche pour afficher le nouveau cercle
       boardLayer.draw();
+      // Fonction pour jouer le son lors d'un clic sur la scène Konva
       updateScorePanel();
       endgame(id);
-    } else {
-      alert("Le nouveau pion doit être adjacent à un pion existant.");
     }
-  } else {
-    alert("La cellule est déjà occupée.");
   }
+
+  stage.on("click", function () {
+    if (!isCellEmpty && hasNeighbor) {
+      play.play();
+    }
+  });
+}
+
+function showToast(message, type) {
+  Toastify({
+    text: message,
+    duration: 3000, // Durée en millisecondes
+    gravity: "top", // Position de la notification (top, bottom, left, right) // Alignement horizontal (left, center, right)
+    backgroundColor: type === "success" ? "#4CAF50" : "#FF6347", // Couleur de fond en fonction du type
+    stopOnFocus: true, // Arrêter le chronomètre lorsqu'un élément reçoit le focus
+  }).showToast();
 }
 
 // Fonction pour vérifier si au moins une cellule voisine contient un pion
@@ -686,12 +704,25 @@ function endgame(id) {
     max_noir = Math.max(...black_scores.filter(Number.isFinite));
     max_blanc = Math.max(...white_scores.filter(Number.isFinite));
     if (max_blanc > max_noir) {
-      alert("Partie terminée, le joueur blanc l'emporte");
+      Swal.fire({
+        title: "Partie terminée, le joueur blanc l'emporte",
+        icon: "info",
+        confirmButtonText: "OK",
+      });
     } else {
       if (max_blanc < max_noir) {
-        alert("Partie terminée, le joueur noir l'emporte");
+        Swal.fire({
+          title: "Partie terminée, le joueur noir l'emporte",
+          icon: "info",
+          confirmButtonText: "OK",
+        });
       } else {
-        alert("Partie terminée, match nul");
+        Swal.fire({
+          title: "Partie terminée, match nul",
+          icon: "info",
+          confirmButtonText: "OK",
+        });
+        alert();
       }
     }
   }
@@ -704,9 +735,10 @@ document.addEventListener("DOMContentLoaded", function () {
   var btnStart = document.querySelector(".btn-danger");
   var vsDiv = document.querySelector(".vs");
   var startingPlayer = null;
-
   // Afficher le modal au chargement de la page
   modal.style.display = "block";
+
+  
 
   // Gestion du clic sur le bouton "Qui commence ?"
   btnStart.addEventListener("click", function () {
@@ -726,29 +758,30 @@ document.addEventListener("DOMContentLoaded", function () {
       var randomChoice = Math.round(Math.random() * 10) / 10; // Génère un nombre aléatoire entre 0 et 1
 
       if (Math.round(randomChoice * 10) % 2 === 0) {
-        currentPlayer = 'black'
+        currentPlayer = "black";
         document.getElementById("text").textContent = `Le joueur NOIR commence`;
         console.log("Le joueur noir commence !");
         startingPlayer = "NOIR";
         document
-        .getElementById("Black-score")
-        .classList.toggle("active", currentPlayer === "black");
+          .getElementById("Black-score")
+          .classList.toggle("active", currentPlayer === "black");
         vsDiv.children[2].style.display = "none"; // Masquer le cadre du joueur blanc
         vsDiv.children[0].style.display = "none";
         vsDiv.children[1].style.display = "none";
       } else {
-        currentPlayer = 'white'
-        document.getElementById("text").textContent = `Le joueur BLANC commence`;
+        currentPlayer = "white";
+        document.getElementById(
+          "text"
+        ).textContent = `Le joueur BLANC commence`;
         console.log("Le joueur blanc commence !");
         startingPlayer = "BLANC";
         document
-        .getElementById("White-score")
-        .classList.toggle("active", currentPlayer === "white");
+          .getElementById("White-score")
+          .classList.toggle("active", currentPlayer === "white");
         vsDiv.children[2].style.display = "none";
         vsDiv.children[1].style.display = "none";
         vsDiv.children[0].style.display = "none"; // Masquer le cadre du joueur noir
       }
-
 
       // Afficher le cadre du joueur qui commence dans le modal
       var startingPlayerDiv = document.createElement("div");
@@ -761,15 +794,12 @@ document.addEventListener("DOMContentLoaded", function () {
       startingPlayerDiv.innerHTML = `<h2>${startingPlayer}</h2>`;
       vsDiv.appendChild(startingPlayerDiv);
 
-
-
-
       // Après 3 secondes, fermer le modal
       setTimeout(function () {
         modal.style.display = "none";
         // Ajoutez ici le code pour initialiser votre jeu avec le joueur qui commence
-      }, 3000);
-    }, 2000);
+      }, 2000);
+    }, 3000);
   });
 });
 
