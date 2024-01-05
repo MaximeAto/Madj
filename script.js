@@ -727,6 +727,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       if (Math.round(randomChoice * 10) % 2 === 0) {
         currentPlayer = 'black'
+        document.getElementById("text").textContent = `Le joueur NOIR commence`;
         console.log("Le joueur noir commence !");
         startingPlayer = "NOIR";
         document
@@ -737,6 +738,7 @@ document.addEventListener("DOMContentLoaded", function () {
         vsDiv.children[1].style.display = "none";
       } else {
         currentPlayer = 'white'
+        document.getElementById("text").textContent = `Le joueur BLANC commence`;
         console.log("Le joueur blanc commence !");
         startingPlayer = "BLANC";
         document
