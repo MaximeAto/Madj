@@ -104,6 +104,9 @@ a {
   padding-bottom: 50px;
   width: max-content;
 }
+button{
+  text-decoration: none;
+}
 .c {
   width: max-content;
   padding: 30px;
