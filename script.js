@@ -1,7 +1,7 @@
 // Dimensions du plateau de jeu
 
 const boardSize = 8;
-const cellSize = 70;
+const cellSize = 60;
 const borderWidth = 35;
 var currentPlayer = "";
 var cach = [];
@@ -95,7 +95,7 @@ function createBoard() {
       if (col === 7) {
         // Numéros de ligne sur la première colonne
         const rowNum = new Konva.Text({
-          x: cellSize * boardSize + cellSize - 20,
+          x: cellSize * boardSize + cellSize - 15,
           y: row * cellSize + borderWidth + cellSize / 2 - 10,
           text: `${row + 1}`,
           fontSize: 18,
@@ -117,7 +117,7 @@ function createBoard() {
       }
 
       if (row === 7) {
-        // Lettres de colonne sur la première ligne
+        // Lettres de colonne sur la deuxieme ligne
         const colLetter = new Konva.Text({
           x: col * cellSize + borderWidth + cellSize / 2 - 5,
           y: row * cellSize + borderWidth + cellSize + 9,
