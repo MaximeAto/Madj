@@ -540,7 +540,7 @@ function scoreCalcul(row, col, color) {
             isCellEmptyAt(row - 1, col) &&
             isCellEmptyAt(row + 1, col) &&
             cach[row - 1][col].color == color &&
-            cach[row - 1][col].color == color
+            cach[row + 1][col].color == color
           ) {
             cach[row][col].c = cach[row + 1][col].c + cach[row - 1][col].c + 1;
           } else if (isCellEmptyAt(row - 1, col)) {
