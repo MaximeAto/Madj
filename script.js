@@ -762,7 +762,7 @@ function endgame(id) {
 // script.js
 document.addEventListener("DOMContentLoaded", function () {
   var modal = document.getElementById("myModal");
-  var btnStart = document.querySelector(".btn-danger");
+  var btnStart = document.getElementById("commencer");
   var vsDiv = document.querySelector(".vs");
   var startingPlayer = null;
   // Afficher le modal au chargement de la page
@@ -826,8 +826,8 @@ document.addEventListener("DOMContentLoaded", function () {
       setTimeout(function () {
         modal.style.display = "none";
         // Ajoutez ici le code pour initialiser votre jeu avec le joueur qui commence
-      }, 2000);
-    }, 3000);
+      }, 1000);
+    }, 2000);
   });
 });
 
