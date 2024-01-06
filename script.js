@@ -738,6 +738,7 @@ function endgame(id) {
         title: "Partie terminée, le joueur blanc l'emporte",
         icon: "info",
         confirmButtonText: "OK",
+        dangerMode: true,
       });
     } else {
       if (max_blanc < max_noir) {
@@ -745,12 +746,14 @@ function endgame(id) {
           title: "Partie terminée, le joueur noir l'emporte",
           icon: "info",
           confirmButtonText: "OK",
+          dangerMode: true,
         });
       } else {
         Swal.fire({
           title: "Partie terminée, match nul",
           icon: "info",
           confirmButtonText: "OK",
+          dangerMode: true,
         });
         alert();
       }
