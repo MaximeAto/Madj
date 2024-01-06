@@ -467,19 +467,19 @@ function scoreCalcul(row, col, color) {
         ) {
           if (
             isCellEmptyAt(row - 1, col - 1) &&
-            isCellEmptyAt(row + 1, col + 1)&&
+            isCellEmptyAt(row + 1, col + 1) &&
             cach[row - 1][col - 1].color == color &&
             cach[row + 1][col + 1].color == color
           ) {
             cach[row][col].l_d =
               cach[row - 1][col - 1].l_d + cach[row + 1][col + 1].l_d + 1;
-          } else if(isCellEmptyAt(row - 1, col - 1)){
-            if (cach[row-1][col-1].color == color) {
-              cach[row][col].l_d = cach[row-1][col-1].l_d + 1;
+          } else if (isCellEmptyAt(row - 1, col - 1)) {
+            if (cach[row - 1][col - 1].color == color) {
+              cach[row][col].l_d = cach[row - 1][col - 1].l_d + 1;
             }
-          }else if(isCellEmptyAt(row + 1, col + 1)){
-            if (cach[row+1][col+1].color == color) {
-              cach[row][col].l_d = cach[row+1][col+1].l_d + 1;
+          } else if (isCellEmptyAt(row + 1, col + 1)) {
+            if (cach[row + 1][col + 1].color == color) {
+              cach[row][col].l_d = cach[row + 1][col + 1].l_d + 1;
             }
           }
         }
@@ -539,17 +539,17 @@ function scoreCalcul(row, col, color) {
           if (
             isCellEmptyAt(row - 1, col) &&
             isCellEmptyAt(row + 1, col) &&
-            cach[row-1][col].color == color &&
-            cach[row-1][col].color == color
+            cach[row - 1][col].color == color &&
+            cach[row - 1][col].color == color
           ) {
             cach[row][col].c = cach[row + 1][col].c + cach[row - 1][col].c + 1;
-          } else if(isCellEmptyAt(row - 1, col)) {
-            if (cach[row-1][col].color == color) {
-              cach[row][col].c = cach[row-1][col].c + 1;
+          } else if (isCellEmptyAt(row - 1, col)) {
+            if (cach[row - 1][col].color == color) {
+              cach[row][col].c = cach[row - 1][col].c + 1;
             }
-          }else if(isCellEmptyAt(row + 1, col)){
-            if (cach[row+1][col].color == color) {
-              cach[row][col].c = cach[row+1][col].c + 1;
+          } else if (isCellEmptyAt(row + 1, col)) {
+            if (cach[row + 1][col].color == color) {
+              cach[row][col].c = cach[row + 1][col].c + 1;
             }
           }
         }
