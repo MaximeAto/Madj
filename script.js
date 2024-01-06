@@ -467,13 +467,19 @@ function scoreCalcul(row, col, color) {
         ) {
           if (
             isCellEmptyAt(row - 1, col - 1) &&
-            isCellEmptyAt(row + 1, col + 1)
+            isCellEmptyAt(row + 1, col + 1)&&
+            cach[row - 1][col - 1].color == color &&
+            cach[row + 1][col + 1].color == color
           ) {
             cach[row][col].l_d =
               cach[row - 1][col - 1].l_d + cach[row + 1][col + 1].l_d + 1;
-          } else {
-            if (cach[new_row][new_col].color == color) {
-              cach[row][col].l_d = cach[new_row][new_col].l_d + 1;
+          } else if(isCellEmptyAt(row - 1, col - 1)){
+            if (cach[row-1][col-1].color == color) {
+              cach[row][col].l_d = cach[row-1][col-1].l_d + 1;
+            }
+          }else if(isCellEmptyAt(row + 1, col + 1)){
+            if (cach[row+1][col+1].color == color) {
+              cach[row][col].l_d = cach[row+1][col+1].l_d + 1;
             }
           }
         }
@@ -485,13 +491,19 @@ function scoreCalcul(row, col, color) {
         ) {
           if (
             isCellEmptyAt(row - 1, col + 1) &&
-            isCellEmptyAt(row + 1, col - 1)
+            isCellEmptyAt(row + 1, col - 1) &&
+            cach[row - 1][col + 1].color == color &&
+            cach[row + 1][col - 1].color == color
           ) {
             cach[row][col].r_d =
               cach[row - 1][col + 1].r_d + cach[row + 1][col - 1].r_d + 1;
-          } else {
-            if (cach[new_row][new_col].color == color) {
-              cach[row][col].r_d = cach[new_row][new_col].r_d + 1;
+          } else if (isCellEmptyAt(row - 1, col + 1)) {
+            if (cach[row - 1][col + 1].color == color) {
+              cach[row][col].r_d = cach[row - 1][col + 1].r_d + 1;
+            }
+          } else if (isCellEmptyAt(row + 1, col - 1)) {
+            if (cach[row + 1][col - 1].color == color) {
+              cach[row][col].r_d = cach[row + 1][col - 1].r_d + 1;
             }
           }
         }
@@ -501,11 +513,20 @@ function scoreCalcul(row, col, color) {
           (directions[i][0] == 0 && directions[i][1] == -1) ||
           (directions[i][0] == 0 && directions[i][1] == 1)
         ) {
-          if (isCellEmptyAt(row, col - 1) && isCellEmptyAt(row, col + 1)) {
+          if (
+            isCellEmptyAt(row, col - 1) &&
+            isCellEmptyAt(row, col + 1) &&
+            cach[row][col - 1].color == color &&
+            cach[row][col + 1].color == color
+          ) {
             cach[row][col].l = cach[row][col - 1].l + cach[row][col + 1].l + 1;
-          } else {
-            if (cach[new_row][new_col].color == color) {
-              cach[row][col].l = cach[new_row][new_col].l + 1;
+          } else if (isCellEmptyAt(row, col - 1)) {
+            if (cach[row][col - 1].color == color) {
+              cach[row][col].l = cach[row][col - 1].l + 1;
+            }
+          } else if (isCellEmptyAt(row, col + 1)) {
+            if (cach[row][col + 1].color == color) {
+              cach[row][col].l = cach[row][col + 1].l + 1;
             }
           }
         }
@@ -515,11 +536,20 @@ function scoreCalcul(row, col, color) {
           (directions[i][0] == -1 && directions[i][1] == 0) ||
           (directions[i][0] == 1 && directions[i][1] == 0)
         ) {
-          if (isCellEmptyAt(row - 1, col) && isCellEmptyAt(row + 1, col)) {
+          if (
+            isCellEmptyAt(row - 1, col) &&
+            isCellEmptyAt(row + 1, col) &&
+            cach[row-1][col].color == color &&
+            cach[row-1][col].color == color
+          ) {
             cach[row][col].c = cach[row + 1][col].c + cach[row - 1][col].c + 1;
-          } else {
-            if (cach[new_row][new_col].color == color) {
-              cach[row][col].c = cach[new_row][new_col].c + 1;
+          } else if(isCellEmptyAt(row - 1, col)) {
+            if (cach[row-1][col].color == color) {
+              cach[row][col].c = cach[row-1][col].c + 1;
+            }
+          }else if(isCellEmptyAt(row + 1, col)){
+            if (cach[row+1][col].color == color) {
+              cach[row][col].c = cach[row+1][col].c + 1;
             }
           }
         }
@@ -737,8 +767,6 @@ document.addEventListener("DOMContentLoaded", function () {
   var startingPlayer = null;
   // Afficher le modal au chargement de la page
   modal.style.display = "block";
-
-  
 
   // Gestion du clic sur le bouton "Qui commence ?"
   btnStart.addEventListener("click", function () {

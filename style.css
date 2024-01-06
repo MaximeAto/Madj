@@ -68,7 +68,10 @@ body {
   max-height: 300px; /* Définissez la hauteur maximale souhaitée */
   overflow-y: auto; /* Ajoute la barre de défilement vertical lorsque nécessaire */
 }
-
+#r{
+  max-height: 400px; /* Définissez la hauteur maximale souhaitée */
+  overflow-y: auto; /* Ajoute la barre de défilement vertical lorsque nécessaire */
+}
 a {
   cursor: pointer;
 }
